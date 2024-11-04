@@ -1,5 +1,6 @@
 package com.sparta.myselectshop.service;
 
+import com.sparta.myselectshop.dto.FolderResponseDto;
 import com.sparta.myselectshop.entity.Folder;
 import com.sparta.myselectshop.entity.User;
 import com.sparta.myselectshop.repository.FolderRepository;
@@ -33,6 +34,17 @@ public class FolderService {
         folderRepository.saveAll(folderList);
     }
 
+    public List<FolderResponseDto> getFolders(User user) {
+        List<Folder> folderList = folderRepository.findAllByUser(user);
+        List<FolderResponseDto> responseDtoList = new ArrayList<>();
+
+        for (Folder folder : folderList) {
+            responseDtoList.add(new FolderResponseDto(folder));
+        }
+
+        return responseDtoList;
+    }
+
     private boolean isExistFolderName(String folderName, List<Folder> existFolderList) {
         for (Folder existFolder : existFolderList) {
             if(folderName.equals(existFolder.getName())){
@@ -41,4 +53,6 @@ public class FolderService {
         }
         return false;
     }
+
+
 }
